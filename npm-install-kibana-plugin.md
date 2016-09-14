@@ -19,21 +19,48 @@ npm install -g generator-kibana-plugin
 Then generate your new plugin
 
 ```
-mkdir my-new-plugin
-cd my-new-plugin
+mkdir my-login
+cd my-login
 yo kibana-plugin
+npm start
 ```
 
 Assuming you've setup a [Kibana development enviroment](https://github.com/elastic/kibana/blob/master/CONTRIBUTING.md#development-environment-setup) at the same level as your plugin directory (and named it `kibana`). Then run the following command inside your plugin directory.
 
 ```
-npm start
+cd ..
+git clone https://github.com/elastic/kibana.git kibana
+cd kibana
+git checkout 4.6
+nvm install "$(cat .node-version)"
+npm install
 ```
 
-With Elasticsearch already running you should now start Kibana in dev mode.
+Start Elasticsearch
 
 ```
-cd ../kibana
+npm run elasticsearch
+npm run makelogs
+```
+
+or 
+
+```
+mkdir ../elasticsearch
+cd ../elasticsearch
+export ES_HEAP_SIZE=256m
+export ES_JAVA_OPTS="-Xms256m -Xmx256m"
+curl -L -O https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.4.0/elasticsearch-2.4.0.tar.gz
+tar -xvf elasticsearch-2.4.0.tar.gz
+cd elasticsearch-2.4.0/bin
+./elasticsearch
+```
+
+
+
+Start Kibana in dev mode.
+
+```
 bin/kibana --dev
 ```
 
